@@ -1,0 +1,7 @@
+{
+    "SECRET": "PortalDocente",
+    "KEY": "portalDocente.sid",
+    "MAX_AGE": {
+      "maxAge": 3600000
+    }
+  }

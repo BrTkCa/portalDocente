@@ -1,0 +1,42 @@
+<% include ./../header %>
+
+        <div id="page-wrapper">
+
+            <div class="row">
+                <br>
+                <div class="col-lg-12">
+                 <div class="table-responsive">
+                  <table id="example" class="table table-bordered table-striped fonte">
+                    <thead>
+                    <th colspan="5" style="text-align: center">Calendário de Aulas Semanais</th>
+                         <tr>
+                            <th><center>Dia da Semana</center></th>
+                            <th><center>Curso</center></th>
+                            <th><center>Nome Disciplina</center></th>
+                            <th><center>Horário</center></th>
+                            <th><center>Sala de Aula</center></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <% horarioDocente.forEach(function(horarioDocente) { %>
+                     <tr>
+                          <td><%= horarioDocente.diasemana %></center></td>
+                          <td><%= horarioDocente.curso %></td>
+                          <td><%= horarioDocente.nome %></td>
+                          <td><center><%= horarioDocente.horario %></center></td>
+                          <td><center><%= horarioDocente.sala %></center></td>
+                      </tr>
+                      <% }) %>
+                  </tbody>
+                </table>
+
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+          </div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+<% include ./../footer %>

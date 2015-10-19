@@ -1,0 +1,58 @@
+<% include ./../header %>
+
+    <div id="page-wrapper">
+
+            <div class="row">
+                
+                <br>
+                <div class="panel panel-primary fonte">
+                  <div class="panel-heading">Dados da Disciplina</div>
+                  <br>
+                  <font size="2" class="fonte"> Disciplina: </font><br>
+                  <font size="2" class="fonte"> Docente Reponsável: </font><br>
+                  <font size="2" class="fonte"> Curso: </font>
+                  <br><br>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+
+                <div class="table-responsive">
+                  <table id="example2" class="table table-bordered table-striped fonte">
+
+                    <thead>
+                        <th colspan="3" style="text-align: center">Dados dos Alunos</th>
+                          <th colspan="2" style="text-align: center">Frequência</th>
+                         <tr>
+                            <th style="text-align: center">CPF</th>
+                            <th style="text-align: center">Nome do Aluno</th>
+                            <th style="text-align: center">Situação</th>
+                            <th style="text-align: center">Total de Faltas</th>
+                            <th style="text-align: center">Frequência</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                      <% listaAlunos.forEach(function(listaAlunos) { %>
+                      <tr>
+                          <td style="text-align: center"><%= listaAlunos.cpf %></td>
+                          <td><%= listaAlunos.nome %></td>
+                          <td style="text-align: center"><%= listaAlunos.descricao %></td>
+                          <td style="text-align: center"><%= listaAlunos.totalfaltas %></td>
+                          <td style="text-align: center"><%= listaAlunos.frequencia %></td>
+                      </tr>
+                      <% }) %>
+                    </tbody>
+                </table>
+
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+          </div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+
+
+
+<% include ./../footer %>

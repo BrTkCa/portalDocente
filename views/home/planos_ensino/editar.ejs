@@ -1,0 +1,998 @@
+<% include ./../header %>
+	<!-- Inicio do corpo -->
+	<div id="page-wrapper">
+		<div class="row padding-panel">
+			<div class="col-xs-12">
+				<div class="row">
+					<div class="col-xs-12">
+						<ol class="breadcrumb">
+							<li>
+								<i class="fa fa-home">
+								</i>
+								<td> <a href="/home">Home</a> </td>
+							</li>
+							<li>
+								<i class="fa fa-tasks fa-fw">
+								</i>
+								<td> <a href="/home/planos_ensino/"> Planos de ensino </a> </td>
+							</li>
+							<li class="active">
+								<i class="fa fa-edit fa-fw">
+								</i>
+								Editar
+							</li>
+						</ol>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<i class="fa fa-clipboard fa-fw">
+						</i>
+						Dados da disciplina
+					</div>
+					<h6>
+						<strong>
+							<td> <abbr title="Identificação do plano de ensino">
+								ID:
+							</abbr>
+						</strong>
+						<%- dados[0]._id %>
+							<span style="padding-left: 5%">
+								<strong>
+									Disciplina:
+								</strong>
+							</span>
+
+								<%- dados[0]._disciplina %>
+								<span style="padding-left: 5%">
+									<strong>
+										Curso:
+									</strong>
+								</span>
+								<%- dados[0]._curso %>
+								<br/>
+								<br/>
+								
+								<span>
+									<strong>
+										Gerado em:
+									</strong>
+								</span>
+								<%- dados[0]._datageracao %>							
+
+								<span style="padding-left: 5%">
+									<strong>
+										Data inicial:
+									</strong>
+								</span>
+								<%- dados[0]._datainipreenchimento %>								
+
+								<span style="padding-left: 5%">
+									<strong>
+										Data final:
+									</strong>
+								</span>
+								<%- dados[0]._datafinalpreenchimento %>
+					</h6>
+				</div>
+			</div>
+		</div>
+		<!-- /.panel -->
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-pencil fa-fw">
+				</i>
+				Plano de ensino
+			</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body" style="max-height: 350px; overflow-y: scroll;">
+				<div class="row">
+					<div class="col-md-12">
+						<form id="frmTetra" action="/home/planos_ensino/editar/salvar" method="post">
+							<fieldset>
+								<legend>
+									<h5>
+										<strong>
+											Objetivo
+										</strong>
+									</h5>
+								</legend>
+								<textarea name="objetivo" id="txtObjetivo" class="form-control"><%= dados[0]._objetivo %></textarea>
+								<div align="right" style="margin-top: 1%;">
+									<button class="btn btn-xs btn-primary" name="salvarTetra" value="1" type="submit" title="Clique para salvar o objetivo">
+										Salvar
+										<span class="glyphicon glyphicon-check">
+										</span>
+									</button>
+								</div>
+							</fieldset>
+							<fieldset>
+								<legend>
+									<h5>
+										<strong>
+											Metodologia
+										</strong>
+									</h5>
+								</legend>
+								<textarea name="metodologia" id="txtMetodologia" class="form-control"><%= dados[0]._metodologia %></textarea>
+								<div align="right" style="margin-top: 1%;">
+									<button class="btn btn-xs btn-primary" name="salvarTetra" value="2" title="Clique para salvar a metodologia">
+										Salvar
+										<span class="glyphicon glyphicon-check">
+										</span>
+									</button>
+								</div>
+							</fieldset>
+							<fieldset>
+								<legend>
+									<h5>
+										<strong>
+											Ementa
+										</strong>
+									</h5>
+								</legend>
+								<textarea name="ementa" id="txtEmenta" class="form-control"><%= dados[0]._ementa %></textarea>
+								<div align="right" style="margin-top: 1%;">
+									<button class="btn btn-xs btn-primary" name="salvarTetra" value="3" title="Clique para salvar a ementa">
+										Salvar
+										<span class="glyphicon glyphicon-check">
+										</span>
+									</button>
+								</div>
+							</fieldset>
+							<fieldset>
+								<legend>
+									<h5>
+										<strong>
+											Critério de avaliação
+										</strong>
+									</h5>
+								</legend>
+								<textarea name="criterioav" id="txtCriterio" class="form-control"><%= dados[0]._criterioav %></textarea>
+								<div align="right" style="margin-top: 1%;">
+									<button class="btn btn-xs btn-primary" name="salvarTetra" value="4" title="Clique para salvar os critérios de avaliação">
+										Salvar
+										<span class="glyphicon glyphicon-check">
+										</span>
+									</button>
+								</div>
+							</fieldset>
+						</form>
+						<fieldset>
+							<legend>
+								<h5>
+									<strong>
+										Programa da disciplina
+									</strong>
+								</h5>
+							</legend>
+								<div align="left" style="margin-bottom: 1%; margin-left: 0.8%;">
+									<button id="btnAddProgr" class="btn btn-xs btn-primary"
+									title="Clique para adicionar" data-toggle="modal" data-target="#mdlAdicionarPrograma">
+										<span class="glyphicon glyphicon-plus">
+										</span>
+										Adicionar
+									</button>
+								</div>
+								<div class="table-responsive">
+									<table id="tblProgramas" class="table table-bordered table-hover table-striped dataTable"
+									style="font-size: 10px !important; width: 98%; ">
+										<thead>
+											<tr>
+												<th>                                 
+													Máscara                                 
+												</th>	
+												<th>                                 
+													Conteudo
+												</th>										
+												<th>                                 
+													Ação                                 
+												</th>
+											</tr>
+										</thead>
+										<tbody id="tbodyProgramas">
+										   <% programas.forEach(function(programa) { %>
+											<tr>
+												<th width="15%">
+													<%- programa._mascara %>
+												</th>											
+												<th width="15%">
+													<%- programa._conteudo %>
+												</th>
+												<th width="15%">                                 
+													<a href="/home/planos_ensino/editar" class="btn btn-xs btn-primary"
+														role="button" title="Clique para editar"> <span class="glyphicon glyphicon-edit"></span> Editar</a>
+													<button id="btnRemProg" class="btn btn-xs btn-danger"
+														title="Clique para excluir" data-toggle="modal" data-target="#mdlRemoverProg" onclick="selecionarProf(<%= programa._id %>);">
+															<span class="glyphicon glyphicon-trash">
+															</span>
+															Excluir
+													</button>
+												</th>
+											</tr>
+											<% }) %>
+										</tbody>
+									</table>
+								</div>
+								<!-- /.table-responsive -->
+						</fieldset>
+						<fieldset>
+							<legend>
+								<h5>
+									<strong>
+										Bibliografia
+									</strong>
+								</h5>
+							</legend>
+								<div align="left" style="margin-bottom: 1%; margin-left: 0.8%;">
+									<button id="btnAddBib" class="btn btn-xs btn-primary"
+									title="Clique para adicionar" data-toggle="modal" data-target="#mdlAdicionarBibliografia">
+										<span class="glyphicon glyphicon-plus">
+										</span>
+										Adicionar
+									</button>
+								</button>
+								</div>
+								<div class="table-responsive">
+									<table class="table table-bordered table-hover table-striped dataTable"
+									style="font-size: 10px !important; width: 98%;">
+										<thead>
+											<tr>
+												<th>
+													Título
+												</th>
+												<th>                                 
+													Edição                                 
+												</th>
+												<th>                                 
+													Editora                                 
+												</th>
+												<th>                                 
+													Referência
+												</th>
+												<th>                                 
+													Ação                                 
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<% bibliografias.forEach(function (bibliografia) {  %>
+											<tr>
+												<th width="15%">
+													<%= bibliografia._titulo %>
+												</th>
+												<th width="15%">
+													<%= bibliografia._edicao %>
+												</th>
+												<th width="15%">
+													<%= bibliografia._editora %>           
+												</th>
+												<th width="15%">
+													<%= bibliografia._descricao %>           
+												</th>
+												<th width="5%">                                                                        
+													<button id="the-thing-that-opens-your-error" type="submit" class="btn btn-xs btn-danger"
+														title="Clique para excluir" data-toggle="modal" data-target="#mdlRemover" onclick="selecionarBiblio(<%= bibliografia._id %>);">
+															<span class="glyphicon glyphicon-trash">
+															</span>
+															Excluir
+													</button>
+												</th>
+											</tr>
+											<% }) %>
+										</tbody>
+									</table>
+								</div>
+								<!-- /.table-responsive -->
+						</fieldset>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Dialog de confirmacao de exclusao -->
+		<div id="mdlRemover" class="modal fade">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header modal-header-danger">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							×
+						</button>
+						<h4 class="modal-title">
+							<i class="fa fa-list fa-fw">
+							</i>
+							Confirmação
+						</h4>
+					</div>
+					<div class="modal-body">
+						<br/>
+						<div class="row" align="center">
+							<label class="label-control">
+								<center>
+									Confirma a exclusão?
+								</center>
+							</label>
+						</div>
+						<br/>
+					</div>
+					<!-- ./modal-body -->
+					<div class="modal-footer">
+						<div align="center">
+							<form id="frmDelete"
+							method="post">
+								<button id="modal-form-submit" class="btn btn-sm btn-primary" title="Se estiver certo disso, clique "
+								data-dismiss="modal" onclick="removerBiblio();">
+									<span class="glyphicon glyphicon-check">
+									</span>
+									Sim
+								</button>
+								<button id="modal-form-nosubmit" type="button" class="btn btn-sm btn-primary"
+								data-dismiss="modal" data-target="#mdlRemover" title="Dessa forma a avaliação não será excluída"
+								aria-hidden="true">
+									<span class="glyphicon glyphicon-remove">
+									</span>
+									Não
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+
+		<!-- Dialog de confirmacao de exclusao de programa -->
+		<div id="mdlRemoverProg" class="modal fade">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header modal-header-danger">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							×
+						</button>
+						<h4 class="modal-title">
+							<i class="fa fa-list fa-fw">
+							</i>
+							Confirmação
+						</h4>
+					</div>
+					<div class="modal-body">
+						<br/>
+						<div class="row" align="center">
+							<label class="label-control">
+								<center>
+									Confirma a exclusão?
+								</center>
+							</label>
+						</div>
+						<br/>
+					</div>
+					<!-- ./modal-body -->
+					<div class="modal-footer">
+						<div align="center">
+							<form id="frmDelete"
+							method="post">
+								<button id="modal-form-submit" class="btn btn-sm btn-primary" title="Se estiver certo disso, clique "
+								data-dismiss="modal" onclick="removerBiblioProg();">
+									<span class="glyphicon glyphicon-check">
+									</span>
+									Sim
+								</button>
+								<button id="modal-form-nosubmit" type="button" class="btn btn-sm btn-primary"
+								data-dismiss="modal" data-target="#mdlRemoverProg" title="Dessa forma a avaliação não será excluída"
+								aria-hidden="true">
+									<span class="glyphicon glyphicon-remove">
+									</span>
+									Não
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+
+		<!-- Dialog de inclusao do programa -->
+		<div id="mdlAdicionarPrograma" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							×
+						</button>
+						<h4 class="modal-title">
+							<i class="fa fa-list fa-fw">
+							</i>
+							Programa da disciplina
+						</h4>
+					</div>
+					<form id="formAddPrograma" action="/home/planos_ensino/editar/salvarPrograma"
+					method="post" data-toggle="validator" role="form">
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-xs-12">
+									<label>Tópico</label>
+								</div>
+								<div class="col-xs-9 col-sm-6">
+									<input id="txtTopico" type="text" class="form-control input-sm" disabled="true"></input>
+								</div>
+								<div class="col-xs-3 col-sm-2">
+									<button id="btnPesqTopico" type="button" class="btn btn-sm btn-primary"
+									title="Clique para pesquisar" data-toggle="modal" data-target="#mdlPesqPrograma">
+										Pesquisar
+										<span class="glyphicon glyphicon-search">
+										</span>                              
+									</button>
+								</div>
+							</div>
+
+							<div class="row" style="margin-top: 1%;">
+								<div class="col-xs-2">
+									<label>Item</label>
+								</div>
+								<div class="col-xs-6">
+									<label>Conteúdo</label>
+								</div>
+								<div class="col-xs-4">
+									<label>Máscara</label>
+								</div>
+
+								<div class="col-xs-2">
+									<input id="txtItem" type="text" class="form-control input-sm" onchange="criarMascara()" pattern="^([0-9]){1,}" data-error="Campo obrigatório" required></input>
+								</div>
+								<div class="col-xs-6">
+									<input id="txtConteudo" type="text" class="form-control input-sm" data-error="Campo obrigatório" required></input>
+								</div>
+								<div class="col-xs-4">
+									<input id="txtMascara" type="text" class="form-control input-sm" disabled="true"></input>
+								</div>
+
+							</div>                  
+						</div>                              
+						<!-- /.modal-body -->
+						<div class="modal-footer">
+							<div align="center">
+								<button type="submit" class="btn btn-sm btn-primary" title="Se estiver certo disso, clique ">
+									<span class="glyphicon glyphicon-check">
+									</span>
+									Salvar
+								</button>
+								<button type="reset" class="btn btn-sm btn-primary" title="Dessa forma o formulário será limpo">
+									<span class="glyphicon glyphicon-remove">
+									</span>
+									Limpar
+								</button>
+							</div>
+						</div>
+					</form>            
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+
+		<!-- Dialog de pesquisa do programa -->
+		<div id="mdlPesqPrograma" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							×
+						</button>
+						<h4 class="modal-title">
+							<i class="fa fa-list fa-fw">
+							</i>
+							Lista de programas cadastrados
+						</h4>
+					</div>					
+						<div class="modal-body">
+
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="table-responsive">
+										<table id="tblBibliografia" class="table table-striped" >  
+										  <thead>  
+											 <tr>											
+												<th>Máscara</th>  
+												<th>Conteúdo</th>  												
+												<th>Selecionar</th>
+											 </tr>  
+										  </thead>  
+										  <tbody id="tbodyListaProg">  
+											 <% programas.forEach(function (programa) { %>
+											 <tr>  												
+											 	<td><%= programa._mascara %></td>  
+												<td><%= programa._conteudo %></td>  																								
+												<td>
+													<center> 
+														<button class="btn btn-xs btn-primary"
+																							title="Selecionar" onclick="selecionarPrograma(<%= programa._id %>,'<%= programa._conteudo %>', '<%= programa._mascara %>', <%= programa._item %>)"> 
+															<span class="glyphicon glyphicon-ok"></span>
+														</button>
+													</center>
+												</td>  
+											 </tr>                                   
+											 <% }) %>
+										  </tbody>  
+										</table>
+										<script>
+											$(document).ready(function(){
+												 $('#tblBibliografia').dataTable();
+											});
+										</script>  
+									</div>     
+								</div>                        
+							</div>                  
+						</div>                              
+						<!-- /.modal-body -->           
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+
+		<!-- Dialog de inclusao de bibliografia -->
+		<div id="mdlAdicionarBibliografia" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							×
+						</button>
+						<h4 class="modal-title">
+							<i class="fa fa-book fa-fw">
+							</i>
+							Bibliografia
+						</h4>
+					</div>
+					<form id="formNovaBib" action="/home/planos_ensino/editar/salvarBibliografia"
+					method="post" data-toggle="validator" role="form">
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-xs-12">
+									<label>Título</label>
+								</div>
+								<div class="col-xs-9 col-sm-9">
+									<input id="txtTituloBib" name="tituloBib" type="text" class="form-control input-sm" data-error="Campo obrigatório" required>
+								</div>
+								<div class="col-xs-3 col-sm-3">
+									<button id="btnPesqTopico" type="button" class="btn btn-xs btn-primary"
+									title="Clique para pesquisar" data-toggle="modal" data-target="#mdlPesqBib">
+										<span class="glyphicon glyphicon-search">
+										</span>                
+										<label class="hidden-xs">Pesquisar</label>
+									</button>
+								</div>
+							</div>
+
+							<div class="row" style="margin-top: 1%;">
+								<div class="col-xs-8 col-sm-8">
+									<label>Subtítulo</label>
+								</div>
+								<div class="col-xs-4 col-sm-4">
+									<label class="hidden-xs">Ano de publicação</label>
+									<label class="show-xs hidden-sm hidden-md hidden-lg">Ano</label>
+								</div>                        
+
+								<div class="col-xs-8 col-sm-8">
+									<input id="txtSubTitBib" name="subTitBib" type="text" class="form-control input-sm" required>
+								</div>
+								<div class="col-xs-4 col-sm-4">
+									<input id="txtAnoPubBib" name="anoPubBib" type="text" class="form-control input-sm" pattern="^([0-9]){4,}" required>
+								</div>
+							</div>
+
+							<div class="row" style="margin-top: 1%;">
+								<div class="col-xs-8 col-sm-8">
+									<label>Autores</label>
+								</div>
+								<div class="col-xs-4 col-sm-4">
+									<label>Edição</label>
+								</div>                        
+
+								<div class="col-xs-8 col-sm-8">
+									<input id="txtAutoresBib" name="autoresBib" type="text" class="form-control input-sm" required></input>
+								</div>
+								<div class="col-xs-4 col-sm-4">
+									<input id="txtEdicaoBib" name="edicaoBib" type="text" class="form-control input-sm" required></input>
+								</div>                        
+
+							</div> 
+
+							<div class="row" style="margin-top: 1%;">
+								<div class="col-xs-8 col-sm-8">
+									<label>Editora</label>
+								</div>
+								<div class="col-xs-4 col-sm-4">
+									<label>Idioma</label>
+								</div>                        
+
+								<div class="col-xs-8 col-sm-8">
+									<input id="txtEditoraBib" name="editoraBib" type="text" class="form-control input-sm" required></input>
+								</div>
+								<div class="col-xs-4 col-sm-4">
+										<select id="idiomasBib" name="idiomaBib" class="form-control input-sm valid">                                 
+											<% idiomas.forEach(function (idioma) { %>                                    
+												<option id="selIdioma" value="<%= idioma.id %>">
+													<a href="#"><label id="linkIdioma" name="nLinkIdioma"><%= idioma.descricao %></label></a>
+												</option>                             
+											<% }) %>
+										</select>
+								</div>
+								
+								<div class="col-xs-6" style="margin-top: 1%;">
+									<label>Tipo</label>                           
+								</div>
+
+								<div class="col-xs-6" style="margin-top: 1%;">
+									<label>Referência</label>
+								</div>                        
+
+								<div class="col-xs-6">
+									<select id="tiposBib" name="tipoBib" class="form-control input-sm valid">                                 
+										<% tipos.forEach(function (tipo) { %>
+											<option value="<%= tipo.id %>">
+												<a href="#"><%= tipo.descricao %></a>
+											</option>                             
+										<% }) %>                             
+									</select>
+								</div>
+
+								<div class="col-xs-6">
+									<select id="referenciasBib" name="referenciaBib" class="form-control input-sm valid">                                 
+										<% referencias.forEach(function (referencia) { %>
+											<option value="<%= referencia.id %>">
+												<a href="#"><%= referencia.descricao %></a>
+											</option>                             
+										<% }) %>                             
+									</select>
+								</div>                          
+
+							</div>                     
+						</div>                              
+						<!-- /.modal-body -->
+						<div class="modal-footer">
+							<div align="center">
+								<button type="submit" class="btn btn-sm btn-primary" title="Se estiver certo disso, clique ">
+									<span class="glyphicon glyphicon-check">
+									</span>
+									Salvar
+								</button>
+								<button type="reset" class="btn btn-sm btn-primary" title="Dessa forma o formulário será limpo">
+									<span class="glyphicon glyphicon-remove">
+									</span>
+									Limpar
+								</button>
+							</div>
+						</div>
+					</form>         
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+
+		<!-- Dialog de pesquisa de bibliografia -->
+		<div id="mdlPesqBib" class="modal fade">
+			<div id="divPesqBib" class=" modal-dialog" style="width:auto !important; 
+			max-width:745px !important; 
+			min-width:200px !important;">
+				<div class="modal-content" >
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							×
+						</button>
+						<h4 class="modal-title hidden-xs">
+							<i class="fa fa-list fa-fw">
+							</i>
+							Lista de bibliografias cadastradas
+						</h4>
+						<h4 class="modal-title show-xs hidden-sm hidden-md hidden-lg">
+							<i class="fa fa-list fa-fw">
+							</i>
+							Bibliografias
+						</h4>
+					</div>               
+						<div class="modal-body">
+
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="table-responsive">                              
+										<table id="tblBibliografias" class="table table-striped" >  
+											<thead>  
+											 <tr>  
+												<th class="hidden-xs hidden-sm">ID</th>  
+												<th>Título</th>  
+												<th>Edição</th>  
+												<th>Editora</th>  
+												<th class="hidden-xs hidden-sm">Ano</th>
+												<th>Selecionar</th>
+											 </tr>  
+										  </thead>  
+										  <tbody>  
+											 <% pesq_biblio.forEach(function (bibliografias) { %>
+											 <tr>  
+												<td width="5%" class="hidden-xs hidden-sm"><div align="center"><%= bibliografias._id %> </div></td>  
+												<td><%= bibliografias._titulo %></td>  
+												<td><%= bibliografias._edicao %></td>  
+												<td><%= bibliografias._editora %></td>                                    
+												<td class="hidden-xs hidden-sm"><div align="center"><%= bibliografias.anopublicacao %></div></td>
+												<td width="15%" align="center"> 
+													<button id="btnSelecionarBib" class="btn btn-xs btn-primary"
+																						title="Selecionar" onclick="enviarBib(<%= bibliografias._id %>, '<%= bibliografias._titulo %>','<%= bibliografias._subtitulo %>', <%= bibliografias._anopublicacao %>, '<%= bibliografias._autores %>', '<%= bibliografias._edicao %>', '<%= bibliografias._editora %>', <%= bibliografias._id_idioma %>, <%= bibliografias._id_tipo_acervo %>, <%= bibliografias._descricao %> );"> <span class="glyphicon glyphicon-ok"></span></a>
+												</td>
+											 </tr>                                   
+											 <% }) %>
+										  </tbody>
+										</table>   
+									</div>     
+								</div>                        
+							</div>                  
+						</div>                              
+						<!-- /.modal-body -->           
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+
+		<script>
+			var idProgSelecionado = null;
+			var mascara = null;
+			var nivel = null;
+
+			$(document).ready(function () {
+				$('#tblBibliografias').dataTable();
+			});
+
+			$('#formNovaBib').submit(function (e){
+				e.preventDefault();
+				var data = {};
+				data.anoPubBib = document.getElementById('txtAnoPubBib').value;
+				data.autoresBib = document.getElementById('txtAutoresBib').value;
+				data.edicaoBib = document.getElementById('txtEdicaoBib').value;
+				data.editoraBib = document.getElementById('txtEditoraBib').value;
+				data.subTitBib = document.getElementById('txtSubTitBib').value;
+				data.tituloBib = document.getElementById('txtTituloBib').value;
+				data.idiomaBib = document.getElementById('idiomasBib').value;
+				data.tipoBib = document.getElementById('tiposBib').value;
+				data.referenciaBib = document.getElementById('referenciasBib').value;
+
+				$.ajax({
+						type: 'POST',
+						data: JSON.stringify(data),
+						cache: false,
+						contentType: 'application/json',
+						url: '/home/planos_ensino/editar/salvarBibliografia',
+						success: function (output){						
+							$('#formNovaBib')[0].reset();							
+						}
+				});				
+			});
+
+         $('#mdlAdicionarBibliografia').on('hidden.bs.modal', function (e) {
+            location.reload();
+         });      				
+	
+			function enviarBib(id, tit, subTit, ano, autores, edicao, editora, idioma, tipo, ref) {
+				var data = {};
+				var opcoes = document.getElementsByName('txtReferenciaSel');
+				var i = opcoes.length;
+
+				while (i--) {
+					if (opcoes[i].checked) data.ref = opcoes[i].value;
+				}
+			
+				data.id = id;
+				document.getElementById('txtTituloBib').value = tit;
+				document.getElementById('txtSubTitBib').value = subTit;
+				document.getElementById('txtAnoPubBib').value = ano;
+				document.getElementById('txtAutoresBib').value = autores;
+				document.getElementById('txtEdicaoBib').value = edicao;
+				document.getElementById('txtEditoraBib').value = edicao;
+				document.getElementById('selIdioma').value = idioma;
+
+				i = 0;
+				while (i < document.getElementById('idiomasBib').options.length){
+					if (document.getElementById('idiomasBib').options[i].value == idioma){
+						document.getElementById('idiomasBib').options.selectedIndex = document.getElementById('idiomasBib').options[i].index;						
+					}
+					i++;
+				}								
+				
+				i = 0;
+				while (i < document.getElementById('tiposBib').options.length){
+					if (document.getElementById('tiposBib').options[i].value == tipo){
+						document.getElementById('tiposBib').options.selectedIndex = document.getElementById('tiposBib').options[i].index;						
+					}
+					i++;					
+				}	
+
+				i = 0;
+				while (i < document.getElementById('referenciasBib').options.length){
+					if (document.getElementById('referenciasBib').options[i].value == ref){
+						document.getElementById('referenciasBib').options.selectedIndex = document.getElementById('referenciasBib').options[i].index;						
+					}
+					i++;					
+				}			
+
+				$.ajax({
+					type: 'POST',
+					data: JSON.stringify(data),
+					cache: false,
+					contentType: 'application/json',
+					url: '/home/planos_ensino/editar/salvarBibliografia/selecBib',
+				});
+					$('#mdlPesqBib').hide();
+				};
+
+				function selecionarBiblio(iden) {
+					var data = {};
+					data.id = iden;
+					$.ajax({
+						type: 'POST',
+						data: JSON.stringify(data),
+						cache: false,
+						contentType: 'application/json',
+						url: '/home/planos_ensino/editar/salvarBibliografia/selecBib'
+					});
+				};
+
+				function selecionarProf(iden){
+					var data = {};
+					data.id = iden;
+					$.ajax({
+						type: 'POST',
+						data: JSON.stringify(data),
+						cache: false,
+						contentType: 'application/json',
+						url: '/home/planos_ensino/editar/salvarBibliografia/selectProg'
+					});
+				}
+
+				function removerBiblio() {
+					$.ajax({
+						type: 'DELETE',
+						cache: false,
+						contentType: 'application/json',
+						url: '/home/planos_ensino/editar/salvarBibliografia/remBib',
+						success: function(output){
+							location.reload();
+						}
+					});					
+				};
+
+				function removerBiblioProg(){
+					$.ajax({
+						type: 'DELETE',
+						cache: false,
+						contentType: 'application/json',
+						url: '/home/planos_ensino/editar/salvarBibliografia/remProg',
+						success: function(result) {					    					        
+							console.log(result);
+					        $('#tbodyProgramas').empty();
+					        $('#tbodyListaProg').empty();
+					        for (var i = 0 ; i < result.data.length ; i++){				        	 
+					        		$('#tbodyProgramas').append('\
+					        				<tr>\
+												<th width="15%">'
+													+ result.data[i]._mascara +
+												'</th>\
+												<th width="15%">'
+													+ result.data[i]._conteudo +
+												'</th>\
+												<th width="15%">\
+													<a href="/home/planos_ensino/editar" class="btn btn-xs btn-primary"\
+														role="button" title="Clique para editar"> <span class="glyphicon glyphicon-edit"></span> Editar</a>\
+													<button id="btnRemProg" class="btn btn-xs btn-danger"\
+														title="Clique para excluir" data-toggle="modal" data-target="#mdlRemoverProg" onclick="selecionarProf('+result.data[i]._id+');">\
+															<span class="glyphicon glyphicon-trash">\
+															</span>\
+															Excluir\
+													</button>\
+												</th>\
+											</tr>\
+					        		');					        	
+					        		$('#tbodyListaProg').append('\
+					        			<tr>\
+					        				<td>'+ result.data[i]._mascara +'</td>\
+					        				<td>'+ result.data[i]._conteudo +'</td>\
+					        				<td><center><button class="btn btn-xs btn-primary" title="Selecionar"  onclick="selecionarPrograma('+result.data[i]._id+',\''+result.data[i]._conteudo+'\',\''+result.data[i]._mascara+'\','+result.data[i]._item+')"><span class="glyphicon glyphicon-ok"></span></button></center></td>\
+					        			</tr>\
+					        			');										
+					        }
+					        idProgSelecionado = null;
+					        $('#mdlRemoverProg').hide();
+					    }						
+					});
+				};
+
+				$('#formAddPrograma').submit(function (e){
+					e.preventDefault();
+					var brokenMask = null;
+					var data = {};	
+
+					data.txtId = idProgSelecionado;				
+					data.txtTopico = document.getElementById('txtTopico').value;
+					data.txtItem = document.getElementById('txtItem').value;
+					data.txtConteudo = document.getElementById('txtConteudo').value;
+					data.txtMascara = document.getElementById('txtMascara').value;
+					brokenMask = data.txtMascara.split('.');
+					data.txtNivel = brokenMask[0]; 
+					$.ajax({
+						type: 'POST',
+						data: JSON.stringify(data),
+						cache: false,
+						contentType: 'application/json',
+						datatype: "json",
+						url: '/home/planos_ensino/editar/salvarPrograma',
+					    success: function (result) {					    
+					        $('#formAddPrograma')[0].reset();
+					        $('#tbodyProgramas').empty();
+					        $('#tbodyListaProg').empty();
+					        for (var i = 0 ; i < result.data.length ; i++){				        	 
+					        		$('#tbodyProgramas').append('\
+					        				<tr>\
+												<th width="15%">'
+													+ result.data[i]._mascara +
+												'</th>\
+												<th width="15%">'
+													+ result.data[i]._conteudo +
+												'</th>\
+												<th width="15%">\
+													<a href="/home/planos_ensino/editar" class="btn btn-xs btn-primary"\
+														role="button" title="Clique para editar"> <span class="glyphicon glyphicon-edit"></span> Editar</a>\
+													<a href="/home/minhas_avaliacoes/cadastro/" class="btn btn-xs btn-danger"\
+														role="button" title="Clique para excluir"><span class="glyphicon glyphicon-trash"></span> Excluir</a>\
+												</th>\
+											</tr>\
+					        		');					        	
+					        		$('#tbodyListaProg').append('\
+					        			<tr>\
+					        				<td>'+ result.data[i]._mascara +'</td>\
+					        				<td>'+ result.data[i]._conteudo +'</td>\
+					        				<td><center><button class="btn btn-xs btn-primary" title="Selecionar"  onclick="selecionarPrograma('+result.data[i]._id+',\''+result.data[i]._conteudo+'\',\''+result.data[i]._mascara+'\','+result.data[i]._item+')"><span class="glyphicon glyphicon-ok"></span></button></center></td>\
+					        			</tr>\
+					        			');										
+					        }
+					        idProgSelecionado = null;					        	
+					    },
+					    error: function(result){
+					        alert("Erro no momento de salvar");
+					    }					    						
+					});
+				});
+				
+				function selecionarPrograma(id, conteudo, mascaraSel, item, nivel){	
+					idProgSelecionado = id;
+					mascara = mascaraSel;
+					document.getElementById('txtTopico').value = conteudo;
+					document.getElementById('txtMascara').value = mascara;
+					$('#mdlPesqPrograma').hide();			
+				};
+
+				function criarMascara(){					
+					var mask;
+					console.log(document.getElementById('txtTopico').value);
+					if (document.getElementById('txtTopico').value == '' || document.getElementById('txtTopico').value == null){
+						mask = document.getElementById('txtItem').value;
+					} else {
+						mask = mascara + '.' + document.getElementById('txtItem').value;
+					}					
+					$('#txtMascara').empty();
+					$('#txtMascara').val(mask);										
+				}
+		</script>         
+
+	</div>
+	</div>
+	<!-- Fim do corpo -->
+	<% include ./../footer %>

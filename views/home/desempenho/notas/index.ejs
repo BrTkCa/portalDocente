@@ -1,0 +1,146 @@
+<% include ./../../header %>
+   <!-- Inicio do corpo -->
+   <div id="page-wrapper">
+      <div class="row padding-panel">
+         <div class="col-xs-12">
+            <div class="row">
+               <div class="col-xs-12">
+                  <ol class="breadcrumb">
+                     <li>
+                        <i class="fa fa-home">
+                        </i>
+                        <a href="/home">Home</a>
+                     </li>
+                     <li>
+                        <i class="fa fa-list">
+                        </i>
+                        <a href="/home/desempenho">Desempenho</a>
+                     </li>
+                     <li class="active">
+                        <i class="fa fa-bar-chart fa-fw">
+                        </i>
+                        Avaliações
+                     </li>
+                  </ol>
+               </div>
+            </div>
+            <div class="panel panel-default">
+               <div class="panel-heading">
+                  <i class="fa fa-clipboard fa-fw">
+                  </i>
+                  <span class="hidden-xs">
+                     Dados da turma
+                  </span>
+
+               </div>
+               <h6>
+                  <strong>
+                     <abbr title="Identificador da turma">
+                        ID:
+                     </abbr>
+                  </strong>
+                  <%- cabecalho[0].id_turma %>
+
+                  <strong>
+                     <span style="margin-left: 5%;" >Tipo:</span>
+                  </strong>
+                  <%- cabecalho[0].turma %>
+               </h6>
+               <h6>
+                     <strong>
+                     Curso:
+                     </strong>
+                     <%- cabecalho[0].curso %>
+               </h6>
+               <h6>
+                  <strong>
+                     Disciplina:
+                  </strong>
+                  <%- cabecalho[0].disciplina %>
+               </h6>               
+            </div>
+         </div>
+      </div>
+      <!-- /.panel -->
+      <div class="panel panel-default">
+         <div class="panel-heading">
+            <i class="fa fa-pencil fa-fw">
+            </i>
+            Avaliações
+         </div>
+         <!-- /.panel-heading -->
+         <div class="panel-body">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="table-responsive">
+                     <table class="table table-bordered table-hover table-striped dataTable"
+                     style="font-size: 10px !important; width: 99%; ">
+                        <thead>
+                           <tr>
+                              <th>                                 
+                                 Data
+                              </th>
+                              <th>
+                                 Período
+                              </th>
+                              <th>                                 
+                                 Avaliação                               
+                              </th>
+                              <th>                                 
+                                 Conteúdo                                
+                              </th>
+                              <th>                                 
+                                 Peso                             
+                              </th>
+                              <th>                                 
+                                 Horário
+                              </th>
+                              <th>                                 
+                                 Ação                          
+                              </th>
+                           </tr>
+                        </thead>
+                        <tbody>      
+                           <% avaliacoes.forEach(function(avaliacao) { %>
+                           <tr>
+                              <th>
+                                 <label><%= avaliacao.dataav %></label>
+                              </th>
+                              <th>
+                                 <label><%= avaliacao.periodo %></label>
+                              </th>
+                              <th>
+                                 <label><%= avaliacao.avaliacao %></label>
+                              </th>
+                              <th>
+                                 <label><%= avaliacao.conteudo %></label>
+                              </th>
+                              <th>
+                                 <label><%= avaliacao.peso %></label>
+                              </th>
+                              <th>
+                                 <label><%= avaliacao.horario %></label>
+                              </th>                              
+                              <th>                                 
+                                 
+                                 <a href="/home/desempenho/notas/<%= cabecalho[0].id_turma  %>/registrar/<%= avaliacao.id %>" class="btn btn-sm btn-primary"
+                                    role="button" title="Clique para registrar"> <span class="glyphicon glyphicon-check"></span> Registrar</a>                                 
+                                 <a class="btn btn-sm btn-primary" href="/home/planos_ensino/emitir/<%= avaliacao.id %>"
+                                    title="Clique para emitir em formato PDF"><span class="glyphicon glyphicon-list"></span> Emitir ata</a>
+                                 
+                              </th>
+                           </tr> 
+                           <% }); %>                        
+                        </tbody>
+                     </table>
+
+                  </div>
+                  <!-- /.table-responsive -->
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   </div>
+   <!-- Fim do corpo -->
+   <% include ./../../footer %>

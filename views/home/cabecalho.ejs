@@ -1,0 +1,25 @@
+			
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="fa fa-clipboard fa-fw"></i><span class="hidden-xs"> Dados do docente</span>
+                            <div class="pull-right">
+                                        <form action="/home/minhas_avaliacoes/" method="post">
+                                            <div class="form-group" align="center" style="margin-top: -7px;">                                                
+                                                <select class="form-control" name="per_letivo" onChange="this.form.submit()">
+                                                    <option value="">Período letivo</option>                                              
+                                                    <% per_letivos.forEach(function(perLetivo) { %>
+                                                        <option value="<%- perLetivo._id %>"><%- perLetivo._codletivo %></option>
+                                                    <% }) %>  
+                                                </select>                                                
+                                            </div>
+                                        </form>                        
+                            </div>                            
+                        </div>                            
+                            <h6><strong><abbr title="Instituição de ensino superior">IES:</abbr></strong>
+                            <%- cabecalho[0]._id %> - <%- cabecalho[0]._ies %>  </h6>
+                            <h6><strong>ID Docente:</strong> <%- cabecalho[0]._id_prof %> <strong>CPF: </strong> <%- cabecalho[0]._cpf %>  </h6>
+                            <h6><strong>Nome:</strong>  <%- cabecalho[0]._nome %></h6>                   
+                            <h6><strong>Período letivo:</strong>  <%- cabecalho[0]._descricao %></h6>    
+                    	</div>
+                	</div>  
+				</div>
+			

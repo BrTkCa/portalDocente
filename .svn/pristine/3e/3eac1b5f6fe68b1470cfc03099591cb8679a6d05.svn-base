@@ -1,0 +1,40 @@
+<% include ./../header %>
+
+        <div id="page-wrapper">
+            <div class="row">
+              <br>
+                <div class="col-lg-12">
+                 <div class="table-responsive">
+                  <table class="table table-bordered table-hover table-striped fonte">
+                    <thead>
+                        <th colspan="5" style="text-align: center">Meus Diários de Classe</th>
+                         <tr>
+                            <th style="text-align: center">Turma</th>
+                            <th><center>Disciplina</th>
+                            <th><center>Curso</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <% diario.forEach(function(diario) { %>
+                     <tr>
+                          <td style="text-align: center"><%= diario.turma %></td>
+                          <td><%= diario.disciplina %></td>
+                          <td style="text-align: center"><%= diario.curso %></td>
+                          <td style="text-align: center"><a href="/diario/alunos"><button type="button" class="btn btn-xs btn-primary" title="Clique aqui para visualizar a frequência dos alunos na disciplina" action="diario/alunos">Visualizar Frequência</button></a></td>
+                          <td style="text-align: center"><a href="/diario/listaDiario"><button type="button" class="btn btn-xs btn-success" title="Clique aqui para digitar as faltas dos alunos na disciplina">Digitar Faltas</button></a></td>
+                       
+                      </tr>
+                      <% }) %>
+                  </tbody>
+                </table>
+
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+          </div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+<% include ./../footer %>

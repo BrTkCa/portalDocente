@@ -1,0 +1,379 @@
+<% include ./../../header %>
+   <script>
+                             $(document).ready(function() {
+                             $('#formNovaAv').isHappy({
+                                fields: {
+                                   '#idPesso': {
+                                      required: true,
+                                      message: 'Por favor preencha esse campo'
+                                   }
+                                }
+                             });
+                          });
+   </script>
+   <!-- Inicio do corpo -->
+   <div id="page-wrapper">
+      <div class="row padding-panel">
+         <div class="col-xs-12">
+            <ol class="breadcrumb">
+               <li>
+                  <i class="fa fa-home">
+                  </i>
+                  <a href="/home">Home</a>
+               </li>
+               <li>
+                  <i class="fa fa-pencil">
+                  </i>
+                  <a href="/home/minhas_avaliacoes/"> Turmas </a>
+               </li>
+               <li class="active">
+                  <i class="fa fa-edit">
+                  </i>
+                  Avaliações
+               </li>
+            </ol>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-lg-12">
+            <div class="panel panel-default" style="padding-bottom: 1%;">
+               <div class="panel-heading">
+                  <i class="fa fa-clipboard fa-fw">
+                  </i>
+                  Dados da turma
+               </div>
+               <h6>
+                  <strong>
+                     <abbr title="Identificação da turma da disciplina">
+                        ID:
+                     </abbr>
+                  </strong>
+                  <%- turma[0].id %>
+                     <span style="padding-left: 5%">
+                        <strong>
+                           Tipo
+                        </strong>
+                     </span>
+                     :
+                     <%- turma[0].tipo %>
+                        <span style="padding-left: 5%">
+                           <strong>
+                              Curso:
+                           </strong>
+                        </span>
+                        <%- turma[0].curso %>
+               </h6>
+               <h6>
+                  <strong>
+                     Disciplina:
+                  </strong>
+                  <%- turma[0].disciplina %>
+               </h6>
+               <center>
+                  <button id="the-thing-that-opens-your-warning" class="btn btn-sm btn-sm btn-warning"
+                  title="Clique para cadastrar nova avaliação" data-toggle="modal" data-target="#mdlNovaAvaliacao">
+                     <span class="glyphicon glyphicon-tag">
+                     </span>
+                     Cadastrar avaliação
+                  </button>
+               </center>
+            </div>
+         </div>
+      </div>
+      <!-- /.panel -->
+      <div class="panel panel-default">
+         <div class="panel-heading">
+            <i class="fa fa-pencil fa-fw">
+            </i>
+            Avaliações previstas para a turma
+         </div>
+         <!-- /.panel-heading -->
+         <div class="panel-body">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="table-responsive">
+                     <table class="table table-bordered table-hover table-striped dataTable">
+                        <thead>
+                           <tr>
+                              <th>
+                                 <center>
+                                    Data
+                                 </center>
+                              </th>
+                              <th>
+                                 Período
+                              </th>
+                              <th>
+                                 Avaliação
+                              </th>
+                              <th>
+                                 Conteúdo
+                              </th>
+                              <th>
+                                 Peso
+                              </th>
+                              <th>
+                                 Horário
+                              </th>
+                              <th>
+                                 <center>
+                                    Ação
+                                 </center>
+                              </th>
+                           </tr>
+                        </thead>
+                         <tbody>
+                           <% av_cadastradas.forEach(function (av_cad) { %>
+                              <tr> 
+                                 <th width="10%;" >
+                                    <center>
+                                       <%- av_cad._dataavaliacao %>
+                                    </center>
+                                 </th>
+                                 <th width="10%;">
+                                    <%- av_cad._periodo %>
+                                 </th>
+                                 <th width="20%">
+                                    <%- av_cad._descricao %>
+                                 </th>
+                                 <th width="30%">
+                                    <%- av_cad._conteudo %>
+                                 </th>
+                                 <th>
+                                    <center>
+                                       <%- av_cad._peso %>
+                                    </center>
+                                 </th>
+                                 <th>
+                                    <center>
+                                       <%- av_cad._horario %>
+                                    </center>
+                                 </th>
+                                 <th>
+                                    <center>
+                                       <form action="/home/minhas_avaliacoes/cadastro/<%- turma[0].id %>/<%- av_cad._id %>"
+                                       method="post">
+                                          <button id="the-thing-that-opens-your-alert" name="editar" value="1" type="submit"
+                                          class="btn btn-sm btn-primary" title="Clique para editar">
+                                             <span class="glyphicon glyphicon-edit">
+                                             </span>
+                                             Editar
+                                          </button>
+                                          <button id="the-thing-that-opens-your-error" type="submit" class="btn btn-sm btn-danger"
+                                          title="Clique para excluir" data-toggle="modal" data-target="#mdlRemover">
+                                             <span class="glyphicon glyphicon-trash">
+                                             </span>
+                                             Excluir
+                                          </button>
+                                       </form>
+                                    </center>
+                                 </th>
+                              </tr>
+                              <% }) %>
+                        </tbody>
+                     </table>
+                  </div>
+                  <!-- /.table-responsive -->
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Dialog de cadastro da nova avalicao -->
+      <div id="mdlNovaAvaliacao" class="modal fade">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                     ×
+                  </button>
+                  <h4 class="modal-title">
+                     <i class="fa fa-list fa-fw">
+                     </i>
+                     Dados da avaliação
+                  </h4>
+               </div>
+               <form id="formNovaAv" action="/home/minhas_avaliacoes/cadastro/<%- turma[0].id %>"
+               method="post">
+                  <div class="modal-body">
+                     <div class="row">
+                        <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2">
+                           <div class="form-group">
+                              <label style="margin-top: 10%; margin-bottom: 45%;">
+                                 Realização
+                              </label>
+                              <label style="margin-bottom: 35%;">
+                                 Período
+                              </label>
+                              <label>
+                                 Avaliação
+                              </label>
+                           </div>
+                        </div>
+                        <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5">
+                           <div class="form-group">
+                              <input name="dpAvaliacao" class="form-control valid" type="text" value=""
+                              id="dtAvaliacao" style="margin-bottom: 8%;">
+                              </input>
+                              <select name="txtPeriodo" class="form-control valid" id="periodo" style="margin-bottom: 5%;">
+                                 <% periodos.forEach(function(periodo){ %>
+                                    <option value="<%- periodo._id %>">
+                                       <a href="#"><%- periodo._descricao %></a>
+                                    </option>
+                                    <% }) %>
+                              </select>
+                              <select name="txtAvaliacao" class="form-control valid" id="avaliacao"
+                              style="margin-bottom: 5%;">
+                                 <% avaliacoes.forEach(function(avaliacao){ %>
+                                    <option value="<%- avaliacao._id %> - <%- avaliacao._descricao %>">
+                                       <a href="#"><%- avaliacao._descricao %></a>
+                                    </option>
+                                    <% }) %>
+                              </select>
+                           </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 show-xs hidden-sm hidden-md hidden-lg">
+                        </div>
+                        <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2">
+                           <div class="form-group">
+                              <label class="show-xs hidden-sm hidden-md hidden-lg">
+                                 Peso
+                              </label>
+                              <label style="margin-top: 150%;" class="hidden-xs">
+                                 Peso
+                              </label>
+                           </div>
+                        </div>
+                        <div class="col-xs-8 col-sm-3 col-md-3 col-lg-3">
+                           <div class="form-group">
+                              <input name="txtPeso_d" style="margin-top: 80%;" type="number" min="0.5"
+                              max="10" step="0.5" id="idPeso_d" class="form-control hidden-xs" maxlength="5">
+                              </input>
+                              <input name="txtPeso_m" type="number" min="0.5" max="10" step="0.5" id="idPeso_m"
+                              class="form-control show-xs hidden-sm hidden-md hidden-lg" maxlength="5">
+                              </input>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- ./row -->
+                     <div class="row">
+                        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                           <label style="margin-bottom: 0%;" class="show-xs hidden-sm hidden-md hidden-lg">
+                              Conteúdo
+                           </label>
+                           <label style="margin-bottom: 35%;" class="hidden-xs show-sm show-md show-lg">
+                              Conteúdo
+                           </label>
+                        </div>
+                        <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+                           <textarea name="txtConteudo" type="text" id="idConteudo" class="form-control"
+                           maxlength="500" rows="2">
+                           </textarea>
+                        </div>
+                     </div>
+                     <!-- ./row -->
+                  </div>
+                  <!-- ./modal-body -->
+                  <div class="modal-footer">
+                     <div align="center">
+                        <button type="submit" class="btn btn-sm btn-warning" title="Se estiver certo disso, clique "
+                        onclick="validacao();">
+                           <span class="glyphicon glyphicon-check">
+                           </span>
+                           Salvar
+                        </button>
+                        <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal"
+                        data-target="#mdlNovaAvaliacao" title="Dessa forma a avaliação não será salva"
+                        aria-hidden="true">
+                           <span class="glyphicon glyphicon-remove">
+                           </span>
+                           Cancelar
+                        </button>
+                     </div>
+                  </div>
+            </div>
+            <!-- /.modal-content -->
+            </form>
+         </div>
+         <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      <!-- Dialog de confirmacao de exclusao -->
+      <div id="mdlRemover" class="modal fade">
+         <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+               <div class="modal-header modal-header-danger">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                     ×
+                  </button>
+                  <h4 class="modal-title">
+                     <i class="fa fa-list fa-fw">
+                     </i>
+                     Confirmação
+                  </h4>
+               </div>
+               <div class="modal-body">
+                  <br/>
+                  <div class="row" align="center">
+                     <label class="label-control">
+                        <center>
+                           Confirma a exclusão?
+                        </center>
+                     </label>
+                  </div>
+                  <br/>
+               </div>
+               <!-- ./modal-body -->
+               <div class="modal-footer">
+                  <div align="center">
+                     <form id="frmDelete" action="/home/minhas_avaliacoes/cadastro/<%- turma[0].id %>/excluir?_method=DELETE"
+                     method="post">
+                        <button id="modal-form-submit" class="btn btn-sm btn-warning" title="Se estiver certo disso, clique "
+                        data-dismiss="modal">
+                           <span class="glyphicon glyphicon-check">
+                           </span>
+                           Sim
+                        </button>
+                        <button id="modal-form-nosubmit" type="button" class="btn btn-sm btn-warning"
+                        data-dismiss="modal" data-target="#mdlRemover" title="Dessa forma a avaliação não será excluída"
+                        aria-hidden="true">
+                           <span class="glyphicon glyphicon-remove">
+                           </span>
+                           Não
+                        </button>
+                     </form>
+                  </div>
+               </div>
+            </div>
+            <!-- /.modal-content -->
+         </div>
+         <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      <!-- script responsavel por submeter o delete da disciplina -->
+      <script>
+                                                 $('#modal-form-submit').on('click', function(e) {
+                                              // We don't want this to act as a link so cancel the link action
+                                              e.preventDefault();
+
+                                              // Find form and submit it
+                                              $('#frmDelete').submit();
+                                           });
+                                           $('#modal-form-nosubmit').on('click', function(e) {
+                                              window.history.go(0);
+                                           });
+
+                                           $('#mdlNovaAvaliacao').on('hidden.bs.modal', function(e) {
+                                              window.history.go(0);
+                                           });
+                                           $('#mdlUpdateAvaliacao').on('hidden.bs.modal', function(e) {
+                                              window.history.go(0);
+                                           });
+                                           $('#mdlRemover').on('hidden.bs.modal', function(e) {
+                                              window.history.go(0);
+                                           });
+      </script>
+      <!-- ./end_submit_form_delete_disciplina -->
+   </div>
+   </div>
+   <!-- Fim do corpo -->
+   <% include ./../../footer %>

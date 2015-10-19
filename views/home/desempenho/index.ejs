@@ -1,0 +1,163 @@
+<% include ./../header %>
+   <!-- Inicio do corpo -->
+   <div id="page-wrapper">
+      <div class="row padding-panel">
+         <div class="col-xs-12">
+            <div class="row">
+               <div class="col-xs-12">
+                  <ol class="breadcrumb">
+                     <li>
+                        <i class="fa fa-home">
+                        </i>
+                        <a href="/home">Home</a>
+                     </li>
+                     <li class="active">
+                        <i class="fa fa-tasks fa-fw">
+                        </i>
+                        Desempenho
+                     </li>
+                  </ol>
+               </div>
+            </div>
+            <div class="panel panel-default">
+               <div class="panel-heading">
+                  <i class="fa fa-clipboard fa-fw">
+                  </i>
+                  <span class="hidden-xs">
+                     Dados do docente
+                  </span>
+                  <div class="pull-right">
+                     <form action="/home/desempenho/" method="post">
+                        <div class="form-group" align="center" style="margin-top: -7px;">
+                           <select class="form-control" name="per_letivo" onChange="this.form.submit()">
+                              <option value="">
+                                 Período letivo
+                              </option>
+                              <% per_letivos.forEach(function(perLetivo) { %>
+                                 <option value="<%- perLetivo._id %>">
+                                    <%- perLetivo._codletivo %>
+                                 </option>
+                                 <% }) %>
+                           </select>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+               <h6>
+                  <strong>
+                     <abbr title="Instituição de ensino superior">
+                        IES:
+                     </abbr>
+                  </strong>
+                  <%- cabecalho[0]._id %>
+                     -
+                     <%- cabecalho[0]._ies %>
+               </h6>
+               <h6>
+                  <strong>
+                     ID Docente:
+                  </strong>
+                  <%- cabecalho[0]._id_prof %>
+                     <strong>
+                        CPF:
+                     </strong>
+                     <%- cabecalho[0]._cpf %>
+               </h6>
+               <h6>
+                  <strong>
+                     Nome:
+                  </strong>
+                  <%- cabecalho[0]._nome %>
+               </h6>
+               <h6>
+                  <strong>
+                     Período letivo:
+                  </strong>
+                  <%- cabecalho[0]._descricao %>
+               </h6>
+            </div>
+         </div>
+      </div>
+      <!-- /.panel -->
+      <div class="panel panel-default">
+         <div class="panel-heading">
+            <i class="fa fa-pencil fa-fw">
+            </i>
+            Minhas turmas
+         </div>
+         <!-- /.panel-heading -->
+         <div class="panel-body">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="table-responsive">
+                     <table class="table table-bordered table-hover table-striped dataTable"
+                     style="font-size: 10px !important; width: 99%; ">
+                        <thead>
+                           <tr>
+                              <th>
+                                 <center>
+                                    <abbr title="Identificação da disciplina">
+                                       ID Disc.
+                                    </abbr>
+                                 </center>
+                              </th>
+                              <th>
+                                 <abbr title="Identificação da turma">
+                                       ID da turma
+                                 </abbr>
+                              </th>
+                              <th>
+                                 Disciplina
+                              </th>
+                              <th>                                 
+                                 Turma                            
+                              </th>
+                              <th>                                 
+                                 Horário de aula
+                              </th>
+                              <th>                                 
+                                 Ação
+                              </th>
+                           </tr>
+                        </thead>
+                        <tbody>                        
+                        <% turmas.forEach(function(turma) { %>                        
+                           <tr>
+                              <th>
+                                 <label><%= turma.id_disc %></label>
+                              </th>
+                              <th>
+                                 <label><%= turma.id_turma %></label>
+                              </th>
+                              <th>
+                                 <label><%= turma.disciplina %></label>
+                              </th>
+                              <th>
+                                 <label><%= turma.turma %></label>
+                              </th>
+                              <th>
+                                 <label><%= turma.horario %></label>
+                              </th>                              
+                              <th>                                 
+                                 
+                                 <a href="/home/desempenho/notas/<%= turma.id_turma %>" class="btn btn-sm btn-primary"
+                                    role="button" title="Clique para entrar em lançamentos de notas"> <span class="glyphicon glyphicon-check"></span> Notas</a>                                 
+                                 <a class="btn btn-sm btn-primary" href="/home/desempenho/faltas/<%= turma.id_turma %>&<%= turma.id_disc %>"
+                                    title="Clique para entrar em lançamentos de faltas"><span class="glyphicon glyphicon-list"></span> Faltas</a>               
+                                 
+                              </th>
+                           </tr>                           
+                        <% }); %>                         
+                        </tbody>
+                     </table>
+
+                  </div>
+                  <!-- /.table-responsive -->
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   </div>
+   <!-- Fim do corpo -->
+   <% include ./../footer %>

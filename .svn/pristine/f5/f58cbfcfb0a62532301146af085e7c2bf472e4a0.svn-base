@@ -1,0 +1,9 @@
+module.exports = function(app){
+
+	var diario = app.controllers.diario
+
+	app.get('/diario', diario.diario);
+	app.get('/diario/listaDiario', diario.listaDiario);
+	app.get('/diario/alunos', diario.listaAlunos);
+	app.get('/diario/digitaDiario', diario.digitaDiario);
+}

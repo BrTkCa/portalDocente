@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+  	<style type="text/css">
+  		.centered {
+    		margin: 0 auto !important;
+    		float: none !important;
+    		margin-top:8% !important;
+		}
+  	</style>
+
+  	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+    <title>Portal do Docente</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/mask.js" type="text/javascript"></script>
+  </head>
+  <body>
+  
+	<form id="formLogin" action="/entrar" method="post">
+	<div class="jumbotron col-md-3 centered">
+      <div class="panel-body" align="center">
+  		<img src="img/logofio.png" class="img-responsive" width="70%" height="70%"/>
+  		<br>
+      <input type="text" class="form-control" name="cpf" id="txtCpf" placeholder="Digite seu CPF" autoFocus onKeyPress="formatar('###.###.###-##', this)" maxlength="14"/>
+  		<br>
+  		<input type="password" class="form-control" name="senha" id="txtSenha" placeholder="Digite sua senha"/>
+  		<br>
+  		<button type="submit" class="btn btn-primary">Entrar
+  			<span class="glyphicon glyphicon-arrow-right"/>
+  		</button>
+  		</div>
+  	</div> 	
+  	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+	</form>
+  </body>
+</html>

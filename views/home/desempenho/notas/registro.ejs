@@ -1,0 +1,268 @@
+<% include ./../../header %>
+   <!-- Inicio do corpo -->
+   <div id="page-wrapper">
+      <div class="row padding-panel">
+         <div class="col-xs-12">
+            <div class="row">
+               <div class="col-xs-12">
+                  <ol class="breadcrumb">
+                     <li>
+                        <i class="fa fa-home">
+                        </i>
+                        <a href="/home">Home</a>
+                     </li>
+                     <li>
+                        <i class="fa fa-list">
+                        </i>
+                        <a href="/home/desempenho">Desempenho</a>
+                     </li>
+                     <li>
+                        <i class="fa fa-bar-chart">
+                        </i>
+                        <a href="/home/desempenho/notas/<%= cabecalho[0].id_turma %>">Avaliações</a>
+                     </li>
+                     <li class="active">
+                        <i class="fa fa-check fa-fw">
+                        </i>
+                        Registro
+                     </li>                     
+                  </ol>
+               </div>
+            </div>
+            <div class="panel panel-default">
+               <div class="panel-heading">
+                  <i class="fa fa-clipboard fa-fw">
+                  </i>
+                  <span class="hidden-xs">
+                     Dados da avaliação
+                  </span>
+
+               </div>
+               <h6>
+                  <strong>
+                     <abbr title="Identificador da turma">
+                        ID:
+                     </abbr>
+                  </strong>
+                  <%- cabecalho[0].id_turma %>
+
+                  <strong>
+                     <span style="margin-left: 5%;" >Tipo:</span>
+                  </strong>
+                  <%- cabecalho[0].turma %>
+
+                     <strong>
+                     <span style="margin-left: 5%;" >Curso:</span>
+                     </strong>
+                     <%- cabecalho[0].curso %>
+               </h6>
+               <h6>
+                  <strong>
+                     Disciplina:
+                  </strong>
+                  <%- cabecalho[0].disciplina %>
+               </h6>
+
+               <h6>
+                  <strong>
+                     Período:
+                  </strong>
+                  <%- cabecalho[0].periodo %>
+
+                  <strong>
+                     <span style="margin-left: 5%;" >Avaliação:</span>
+                  </strong>
+                  <%- cabecalho[0].avaliacao %>
+
+                  <strong>
+                     <span style="margin-left: 5%;" >Peso:</span>
+                  </strong>
+                  <%- cabecalho[0].peso %>
+               </h6>
+
+               <h6>
+                  <strong>
+                     Data:
+                  </strong>
+                  <%- cabecalho[0].data_av %>
+               </h6>
+
+            </div>
+         </div>
+      </div>
+      <!-- /.panel -->
+
+         
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="table-responsive">    
+                  <form id="formNota">
+                     <table id="tblNotas" class="table table-bordered table-hover scroll dataTable"
+                     style="font-size: 10px !important; width: 99%;">
+                        <thead>
+                           <tr class="header">
+                              <th>                                 
+                                 Foto
+                              </th>
+                              <th>                                 
+                                 ID matrícula
+                              </th>
+                              <th>
+                                 CPF
+                              </th>
+                              <th>                                 
+                                 Nome
+                              </th>
+                              <th>                                 
+                                 Situação
+                              </th>
+                              <th>                                 
+                                 Nota
+                              </th>                              
+                           </tr>
+                        </thead>
+                        <tbody>      
+                           <% alunos.forEach(function(aluno) { %>
+                           <tr>
+                              <td >
+                                 <center> 
+                                    <div class="Profile">
+                                        <img src="/<%= aluno.imagem %>" alt="Perfil" class="img-circle" height="30px" width="30px">
+                                        <div class="Overlay">
+                                            <img src="/<%= aluno.imagem %>" alt="Perfil" class="img-circle" height="100px" width="100px">              
+                                        </div>
+                                    </div>   
+                                 </center>
+
+                              </td>
+                              <td >
+                                 <center> 
+                                    <label id="lblMatricula"><%= aluno.matricula %></label>  
+                                 </center>
+                              </td>
+                              <td >
+                                 <center> 
+                                    <label><%= aluno.cpf %></label>
+                                 </center>
+                              </td>
+                              <td >
+                                 <label style="float: left"><%= aluno.nome %></label>
+                              </td>
+                              <td >
+                                 <center> 
+                                    <label><%= aluno.sigla %></label>
+                                 </center>
+                              </td>                             
+                              <td >
+                                 <center> 
+                                    <input id="<%= aluno.matricula %>" name="txtNota" type="number" min="0.0" max="10" step="0.01" size="10" value="<%= aluno.nota %>" ></input>
+                                 </center>
+                              </td>                    
+                           </tr> 
+                           <% }); %>                        
+                        </tbody>
+                     </table>
+                     </form>
+                     <br/>
+                     <div align="center">
+                        <button class="btn btn-sm btn-primary" onclick="enviarNotas();" title="Clique para confirmar o lançamento"><span class="glyphicon glyphicon-ok"></span> Registrar</button>
+                     </div>
+
+                     <style type = "text/css" scoped>                  
+
+                        table.scroll tbody,
+                        table.scroll thead { display: block; }
+
+
+                        table.scroll tbody {
+                            height: 250px;
+                            overflow-y: auto;
+                            overflow-x: hidden;
+                        }
+
+                        tbody td, thead th {
+                            width: 19%;    
+                            
+                        }
+
+                        tbody td:last-child, thead th:last-child {
+                            border-right: none;
+                        }
+
+                        input[type="number"] {
+                           width: 50px;
+                        }
+
+                     </style>
+
+                     <script>
+                        // Change the selector if needed
+                        var $table = $('table.scroll'),
+                            $bodyCells = $table.find('tbody tr:first').children(),
+                            colWidth;
+
+                        // Adjust the width of thead cells when window resizes
+                        $(window).resize(function() {
+                            // Get the tbody columns width array
+                            colWidth = $bodyCells.map(function() {
+                                return $(this).width();
+                            }).get();
+                            
+                            // Set the width of thead columns
+                            $table.find('thead tr').children().each(function(i, v) {
+                                $(v).width(colWidth[i]);
+                            });    
+                        }).resize(); // Trigger resize handler
+
+                        function enviarNotas(){
+                           var notas = [], nota = {}, controle  = false;
+                           nota.matricula = '';
+                           nota.valor = '';
+
+                           $('label[id="lblMatricula"]').each(function(key,val){  
+                              nota = {};            
+                              nota.matricula = val.textContent;
+
+                                 $('input[name="txtNota"]').each(function(key2,val2){
+                                   if (val2.value < 0 || val2.value > 10){
+                                       controle = true;                                       
+                                   } else {                                                            
+                                       if (key == key2){
+                                          nota.valor = val2.value;   
+                                       }      
+                                    }                              
+                                 });
+
+                              notas[key] = nota;
+                           });                                                     
+                           
+                           if (!controle){
+                              $.ajax({
+                                 type: 'POST',
+                                 data: JSON.stringify(notas),
+                                 cache: false,
+                                 contentType: 'application/json',
+                                 url: '/home/desempenho/notas/registrar',
+                                 success: function (retorno){
+                                    if (retorno == true)
+                                       alert("Lançamentos realizados com sucesso");
+                                    else {
+                                       alert("Falha ao efetuar lançamentos");
+                                    }
+                                 }
+                              });
+                           } else {
+                              alert("Valor da nota lançada está fora do intervalo");
+                           }                     
+                        }
+                     </script>                    
+                  </div>               
+                  <!-- /.table-responsive -->
+
+               </div>
+            </div>
+
+   </div>
+   </div>
+   <!-- Fim do corpo -->
+   <% include ./../../footer %>

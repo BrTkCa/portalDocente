@@ -1,0 +1,38 @@
+var sequelize = require('./../libs/pg_db_connect');
+
+module.exports = function(app){
+	
+	var HorarioAula = { 
+		horarioDocente: function(req, res){
+
+			var user = req.session.usuario;
+			console.log(user);
+			var sql = "select ds.descricao as diasemana, d.id || ' - ' || d.nome as nome, "
++"(select to_char(hi.horario,'HH24:mm') ||' às ' || to_char(hf.horario, 'HH24:mm') from acad.tbl_hora_fim hf "
++"inner join acad.tbl_hora_inicio hi on hi.id = hf.id_inicio where hf.id = ct.id_hora_fim) as horario, s.codigosala as sala, c.nome as curso "
+						+"from acad.tbl_calendario_turma ct " 
+						+"inner join acad.tbl_tma_disc tma on tma.id = ct.id_turma "
+						+"inner join acad.tbl_matriz_curricular mc on mc.id = tma.id_matriz "
+						+"inner join acad.tbl_curso c on c.id = mc.id_curso "
+						+"inner join acad.tbl_disc d on d.id = tma.id_disciplina "
+						+"inner join acad.tbl_docente_turma dt on dt.id_turma = tma.id " 
+						+"inner join acad.tbl_docente doc on doc.id = dt.id_docente " 
+						+"inner join global.tbl_pessoa p on p.id = doc.pessoa_id "
+						+"inner join global.tbl_documentacao docu on docu.id = p.documentacao_id "
+						+"left join acad.tbl_sala s on s.id = ct.id_sala " 
+						+"left join acad.tbl_dia_semana ds on ds.id = ct.id_dia_semana "
+						+"where docu.cpf = '"+user+"' and tma.id_periodo_letivo = 1003 order by ds.id asc";
+
+			sequelize.query(sql, {type: sequelize.QueryTypes.SELECT}).success(function(data){
+
+				var resultado = {horarioDocente: data};
+				console.log(resultado);
+				res.render('horario/quadroDocente', resultado);
+
+			});
+
+		}
+	}
+
+		return HorarioAula;
+}

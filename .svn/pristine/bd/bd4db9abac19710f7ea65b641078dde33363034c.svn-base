@@ -1,0 +1,44 @@
+var crypto = require('crypto');
+var sequelize = require('./../libs/pg_db_connect');
+
+module.exports = function(app) {
+
+  var Usuario = app.models.usuario;
+  var md5sumTela = crypto.createHash('md5');
+
+  var LoginController = {
+    index: function(req, res) {
+      res.render('login/index');
+    },
+
+    login: function(req, res) {
+      
+      var sql = "select * from global.tbl_user where login = '" + req.body.cpf + "' and status = 'ATI' limit 1 ";
+
+      sequelize.query(sql,{type: sequelize.QueryTypes.SELECT}).success(function(data){
+      
+          md5sumTela = crypto.createHash('md5');
+
+          if (req.body.cpf == data[0].login && md5sumTela.update(req.body.senha).digest('hex') === data[0].senha){
+            req.session.usuario = data[0].login;
+            console.log(data);
+            res.redirect("/home");        
+          } else {
+            console.log("Usuário ou senha inválidas");
+          }
+
+      }).catch(function(error){
+            console.log(error);
+            res.redirect("error/server-error");
+      });
+    },
+
+    logout: function(req, res) {
+      req.session.destroy();
+      res.redirect('/');
+    }
+  };
+
+  return LoginController;
+
+};
