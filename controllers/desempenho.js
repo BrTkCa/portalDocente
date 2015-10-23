@@ -427,17 +427,18 @@ module.exports = function (app) {
                error: error
             });
          });
-      },
+      },      
 
       salvarLancamentosFaltas: function (req, res){
-         var notas = req.body, controle = true;  
-
-         notas.forEach(function (entry) {
+         var faltas = req.body, controle = true, user = req.session.usuario, query;
+         
+         faltas.forEach(function (entry) {
             
-            if (entry.valor == '')
-               entry.valor = null;
+            if (entry.split('_')[2] == '')
+               entry.split('_')[2] = 0;
 
-            var query = "SELECT * FROM acad.manter_lancamento_nota_portal_prof(" + _id_ava + "," + entry.matricula + ", " + entry.valor +")";
+            console.log(entry);
+            query = "SELECT * FROM acad.manter_lancamento_falta_portal_prof(" + entry.split('_')[1] + "," + entry.split('_')[0] + ", " + entry.split('_')[2] +")";
 
             /*
              * Para executar subqueries e necessario inserir os sequelizer query dentro da funcao de
@@ -448,8 +449,7 @@ module.exports = function (app) {
             }).success(function (lancamentos) {
                done = _.after(lancamentos.length, function () {
                   callback(lancamentos)
-               })
-               
+               })               
             }).catch(function (error) {
                   controle = false;
                   res.render('server-error', {
@@ -458,14 +458,13 @@ module.exports = function (app) {
                      session: req.session,
                   });
             });
-
          });
 
          if (controle){
             res.send(true);
          } else{
             res.send(false);
-         }         
+         }
       }
 
    }

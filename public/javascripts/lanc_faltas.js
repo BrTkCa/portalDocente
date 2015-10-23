@@ -1,10 +1,12 @@
 window.onload = selectCurrentMonth;
 
-var quant_colums = 0;
+var quant_colums = 0, aulas_dadas, diarios = [];
 
 // No carregamento da pagina é setado a tabela como paginator dataTable
 $(document).ready(function () {
-   $('#tblFaltas').dataTable();
+   $('#tblFaltas').dataTable({
+    searching: false
+   });
 });
 
 // Function responsavel para selecionar o mes atual 
@@ -46,6 +48,7 @@ function selectMonth(month, origin) {
       cache: false,
       contentType: 'application/json',
       datatype: "json",
+      async: false,
       url: '/home/desempenho/faltas/obter',
       success: function (returns) {
          $('#day').empty();
@@ -63,10 +66,12 @@ function selectMonth(month, origin) {
                      <th colspan="1">' + returns[key][key2].data_aula.split('-')[2].substr(0, 2) + '</th>\
               ');
 
+              diarios[diarios.length] = returns[key][key2].id;
             };
          };
-         quant_colums = cont;
-
+         quant_colums = cont;         
+         aulas_dadas = returns[key][key2].aulasdadas;
+         
          // Cabecalho padrao da tabela          
          $('#colMes').empty();
          $('#colMes').append('\
@@ -74,9 +79,9 @@ function selectMonth(month, origin) {
           ');
          $('#colMes').attr('colspan', cont);
 
-      }
-   });
-   obterAlunos();
+      }      
+   });   
+   obterAlunos(aulas_dadas);
 };
 
 // Funcao responsavel pelo carregamento do conteudo da tabela
@@ -101,6 +106,7 @@ function selectDay() {
       cache: false,
       contentType: 'application/json',
       datatype: "json",
+      async: false,
       url: '/home/desempenho/faltas/obter',
       success: function (returns) {
          $('#lnDia').empty();
@@ -115,8 +121,9 @@ function selectDay() {
               ');
             };
             quant_colums = cont;
-         };
-
+            aulas_dadas = returns[key][key2].aulasdadas;
+         }         
+        
          // Cabecalho padrao da tabela          
          $('#colMes').empty();
          $('#colMes').attr('colspan', cont);
@@ -132,7 +139,7 @@ function selectDay() {
 // geracao do conteudo da tabela.
 
 
-function obterAlunos() {
+function obterAlunos(aulas_dadas) {
    var data = {};
    data.cont = 1;
 
@@ -143,8 +150,7 @@ function obterAlunos() {
       datatype: "json",
       url: '/home/desempenho/faltas/obterAlunos',
       success: function (returns) {
-         $('#tBodyFaltas').empty();
-
+         $('#tBodyFaltas').empty();         
          if (quant_colums != 0) {
             for (var key in returns) {
                // Atualizando select de dia
@@ -172,9 +178,9 @@ function obterAlunos() {
                                    </center>\
                                 </td>\
                 ');
-                  //console.log(returns[key][key2]);
+                  
                   for (var i = 0; i < quant_colums; i++) {
-                     $tr.append("<td ><center><input type='number' width:'50px;' min='1'></input></td>");
+                     $tr.append("<td ><center><input id='txtFaltas' type='number' width:'50px;' min='1' max='" + aulas_dadas + "' name='" + returns[key][key2].matricula + "_" + diarios[i] + "'></input></td>");                     
                   }
 
                   if (quant_colums != 0) 
@@ -185,13 +191,15 @@ function obterAlunos() {
                };
             };
          } else {
-            var $tr = $('<tr><td ><center>Sem dados</center></td><td ><center>Sem dados</center></td><td ><center> Sem dados</center></td><td ><center>Sem dados</center></td><td ><center>Sem dados</center></td></tr>');             
+            var $tr = $('<tr><td ><center>Sem dados</center></td><td ><center>Sem dados</center></td><td ><center> Sem dados</center></td><td ><center>Sem dados</center></td><td ><center>Sem dados</center></td></tr>');
             $('#tBodyFaltas').append($tr);
          }
         
-        $('#tblFaltas').dataTable({
-          destroy : true
-        });
+        //var table = $('#tblFaltas').dataTable({
+          //            searching: false
+            //        });
+        //table.destroy();
+
         $("input[type='number']").css("width", "40");
 
       }
@@ -244,46 +252,23 @@ function returnDescMonth(month) {
 // node das faltas registradas. Envolve validacao, envio via ajax e mensagem 
 // na tela para o usuario.
 
-
 function enviarFaltas() {
-   var notas = [],
-      nota = {},
-      controle = false;
-   nota.matricula = '';
-   nota.valor = '';
+   var faltas = [];
 
-   $('label[id="lblMatricula"]').each(function (key, val) {
-      nota = {};
-      nota.matricula = val.textContent;
-
-      $('input[name="txtNota"]').each(function (key2, val2) {
-         if (val2.value < 0 || val2.value > 10) {
-            controle = true;
-         } else {
-            if (key == key2) {
-               nota.valor = val2.value;
-            }
-         }
-      });
-
-      notas[key] = nota;
+   $('input[type="number"]').each(function () {
+      faltas[faltas.length] = this.name + "_" + this.value;
    });
 
-   if (!controle) {
-      $.ajax({
-         type: 'POST',
-         data: JSON.stringify(notas),
-         cache: false,
-         contentType: 'application/json',
-         url: '/home/desempenho/notas/registrar',
-         success: function (retorno) {
-            if (retorno == true) alert("Lançamentos realizados com sucesso");
-            else {
-               alert("Falha ao efetuar lançamentos");
-            }
-         }
-      });
-   } else {
-      alert("Valor da nota lançada está fora do intervalo");
-   }
+   $.ajax({
+      type: 'POST',
+      data: JSON.stringify(faltas),
+      cache: false,
+      contentType: 'application/json',
+      url: '/home/desempenho/faltas/registrar',
+      success: function (retorno) {
+         if (retorno == true) alert("Lançamentos realizados com sucesso");
+         else alert("Falha ao efetuar lançamentos");
+      }
+   });
+
 }
