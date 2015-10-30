@@ -434,10 +434,10 @@ module.exports = function (app) {
          
          faltas.forEach(function (entry) {
             
-            if (entry.split('_')[2] == '')
-               entry.split('_')[2] = 0;
-
-            console.log(entry);
+            if (entry.split('_')[2] == '' || entry.split('_')[2] == null){                  
+                entry = entry.concat("0");                
+            }
+            
             query = "SELECT * FROM acad.manter_lancamento_falta_portal_prof(" + entry.split('_')[1] + "," + entry.split('_')[0] + ", " + entry.split('_')[2] +")";
 
             /*

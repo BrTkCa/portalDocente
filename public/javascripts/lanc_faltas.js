@@ -11,8 +11,6 @@ $(document).ready(function () {
 
 // Function responsavel para selecionar o mes atual 
 // no carregando da pagina
-
-
 function selectCurrentMonth() {
    var m = new Date().getMonth();
    m += 1;
@@ -24,8 +22,6 @@ function selectCurrentMonth() {
 
 // Function responsavel por carregar o corpo da tabela com base com
 // base na selecao do mes na tela.
-
-
 function selectMonth(month, origin) {
    var month_selected, data = {},
       e, cont = 0;
@@ -86,8 +82,6 @@ function selectMonth(month, origin) {
 
 // Funcao responsavel pelo carregamento do conteudo da tabela
 // com base na selecao do dia na tela.
-
-
 function selectDay() {
    var month_selected, day_selected, data = {},
       e, cont = 0;
@@ -137,10 +131,8 @@ function selectDay() {
 
 // Function responsavel por obter os alunos no momento de 
 // geracao do conteudo da tabela.
-
-
 function obterAlunos(aulas_dadas) {
-   var data = {};
+   var data = {}, iden, teste;
    data.cont = 1;
 
    $.ajax({
@@ -148,6 +140,7 @@ function obterAlunos(aulas_dadas) {
       cache: false,
       contentType: 'application/json',
       datatype: "json",
+      async: false,
       url: '/home/desempenho/faltas/obterAlunos',
       success: function (returns) {
          $('#tBodyFaltas').empty();         
@@ -180,7 +173,10 @@ function obterAlunos(aulas_dadas) {
                 ');
                   
                   for (var i = 0; i < quant_colums; i++) {
-                     $tr.append("<td ><center><input id='txtFaltas' type='number' width:'50px;' min='1' max='" + aulas_dadas + "' name='" + returns[key][key2].matricula + "_" + diarios[i] + "'></input></td>");                     
+                    iden = returns[key][key2].matricula + "_" + diarios[i];
+                    $tr.append("<td ><center><input id='" + iden + "' type='number' width='50px;' min='1' max='" + aulas_dadas + "' name=" + iden + "></input></td>");
+                    console.log(typeof iden);
+                    $(':input[name="'+iden+'"]').prop('disabled',true);
                   }
 
                   if (quant_colums != 0) 
@@ -251,7 +247,6 @@ function returnDescMonth(month) {
 // Function responsavel por executar o envio para o servidor
 // node das faltas registradas. Envolve validacao, envio via ajax e mensagem 
 // na tela para o usuario.
-
 function enviarFaltas() {
    var faltas = [];
 
